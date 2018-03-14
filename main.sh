@@ -40,9 +40,8 @@ CL="\e[0m"       ## Limpiar colores
 
 WORKSCRIPT=$PWD  ## Directorio principal del script
 USER=$(whoami)   ## Usuario que ejecuta el script
-VERSION='0.5.3'  ## Versión en desarrollo
+VERSION='0.0.1'  ## Versión en desarrollo
 LOGERROR="$WORKSCRIPT/errores.log"  ## Archivo donde almacenar errores
-DEBUG=false      ## Establece si está el script en modo depuración
 
 ############################
 ##     IMPORTACIONES      ##
@@ -50,21 +49,12 @@ DEBUG=false      ## Establece si está el script en modo depuración
 source "$WORKSCRIPT/Agregar_Repositorios.sh"
 source "$WORKSCRIPT/funciones.sh"
 source "$WORKSCRIPT/Instalar_Configuraciones.sh"
-source "$WORKSCRIPT/limpiador.sh"
 
 source "$WORKSCRIPT/Apps/0_Main.sh"
 source "$WORKSCRIPT/Personalizar/Configurar_GIT.sh"
-source "$WORKSCRIPT/Personalizar/Personalización_GTK.sh"
 source "$WORKSCRIPT/Personalizar/Tipografías.sh"
 source "$WORKSCRIPT/Personalizar/Variables_Entorno.sh"
 source "$WORKSCRIPT/Servidores/0_Main.sh"
-source "$WORKSCRIPT/variables.sh"
-
-## TOFIX → Refactorizar servidores en subdirectorio con menú propio
-## TOFIX → Refactorizar Personalización en subdirectorio añadiendo menú propio
-#source 'Servidores/0_Main.sh'
-#source 'Personalizar/0_Main.sh'
-
 
 ###########################
 ##       VARIABLES       ##
@@ -111,13 +101,12 @@ menuPrincipal() {
                menuAplicaciones -a        ## Indica con "-a" que ejecute todas
                instalar_configuraciones
                configuracion_git
-               personalizar
                agregar_fuentes
                instalar_variables
                menuServidores -a;;        ## Indica con "-a" que ejecute todas
 
 
-            0) ## SALIR
+            0)  ## SALIR
               clear
               echo -e "$RO Se sale del menú$CL"
               echo ''

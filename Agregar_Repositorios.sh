@@ -26,41 +26,25 @@
 agregar_llaves() {
     echo -e "$VE Instalando llaves de repositorios$CL"
 
-    sudo apt install -y debian-keyring 2>> /dev/null
-    sudo apt install -y pkg-mozilla-archive-keyring 2>> /dev/null
-    sudo apt install -y deb-multimedia-keyring 2>> /dev/null
-
-    ## Multisystem
-    echo -e "$VE Agregando clave para$RO Multisystem$CL"
-    sudo wget -q -O - http://liveusb.info/multisystem/depot/multisystem.asc | sudo apt-key add -
-
     ## Webmin
     echo -e "$VE Agregando clave para$RO Webmin$CL"
     wget http://www.webmin.com/jcameron-key.asc && sudo apt-key add jcameron-key.asc
     sudo rm jcameron-key.asc
 
-    ## Virtualbox Oficial
-    echo -e "$VE Agregando clave para$RO Virtualbox$CL"
-    wget https://www.virtualbox.org/download/oracle_vbox_2016.asc
-    sudo apt-key add oracle_vbox_2016.asc
-    sudo rm oracle_vbox_2016.asc
-
     ## Docker
     echo -e "$VE Agregando clave para$RO Docker$CL"
     sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys F76221572C52609D
-
-    ## Heroku
-    echo -e "$VE Agregando clave para$RO Heroku$CL"
-    curl -L https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
 
     ## Mi propio repositorio en launchpad
     echo -e "$VE Agregando clave para$RO Fryntiz Repositorio$CL"
     gpg --keyserver keyserver.ubuntu.com --recv-key B5C6D9592512B8CD && gpg -a --export $PUBKRY | sudo apt-key add -
 
     ## Repositorio de PostgreSQL Oficial
+    echo -e "$VE Agregando clave para$RO PostgreSQL Oficial Repositorio$CL"
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
     ## Repositorio de NodeJS Oficial
+    echo -e "$VE Agregando clave para$RO NodeJS Oficial Repositorio$CL"
     curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
 }
 

@@ -59,25 +59,6 @@ programas_default() {
         sudo update-alternatives --set x-terminal-emulator /usr/bin/xterm
     fi
 
-    ## Navegador
-    if [[ -f '/usr/bin/firefox-esr' ]]; then
-        echo -e "$VE Estableciendo Navegador WEB por defecto a$RO Firefox-ESR$CL"
-        sudo update-alternatives --set x-www-browser /usr/bin/firefox-esr
-        sudo update-alternatives --set gnome-www-browser /user/bin/firefox-esr 2>> /dev/null
-    elif [[ -f '/usr/bin/firefox' ]]; then
-        echo -e "$VE Estableciendo Navegador WEB por defecto a$RO Firefox$CL"
-        sudo update-alternatives --set x-www-browser /usr/bin/firefox
-        sudo update-alternatives --set gnome-www-browser /user/bin/firefox 2>> /dev/null
-    elif [[ -f '/usr/bin/chromium' ]]; then
-        echo -e "$VE Estableciendo Navegador WEB por defecto a$RO Chromium$CL"
-        sudo update-alternatives --set x-www-browser /usr/bin/chromium
-        sudo update-alternatives --set gnome-www-browser /user/bin/chromium 2>> /dev/null
-    elif [[ -f '/usr/bin/chrome' ]]; then
-        echo -e "$VE Estableciendo Navegador WEB por defecto a$RO chrome$CL"
-        sudo update-alternatives --set x-www-browser /usr/bin/chrome
-        sudo update-alternatives --set gnome-www-browser /user/bin/chrome 2>> /dev/null
-    fi
-
     ## Editor de texto terminal
     if [[ -f '/usr/bin/vim.gtk3' ]]; then
         echo -e "$VE Estableciendo Editor por defecto a$RO Vim GTK3$CL"
@@ -88,18 +69,6 @@ programas_default() {
     elif [[ -f '/bin/nano' ]]; then
         echo -e "$VE Estableciendo Editor WEB por defecto a$RO Nano$CL"
         sudo update-alternatives --set editor /bin/nano
-    fi
-
-    ## Editor de texto con GUI
-    if [[ -f '/usr/bin/gedit' ]]; then
-        echo -e "$VE Estableciendo Editor GUI por defecto a$RO Gedit$CL"
-        sudo update-alternatives --set gnome-text-editor /usr/bin/gedit
-    elif [[ -f '/usr/bin/kate' ]]; then
-        echo -e "$VE Estableciendo Editor GUI por defecto a$RO Kate$CL"
-        sudo update-alternatives --set gnome-text-editor /usr/bin/kate
-    elif [[ -f '/usr/bin/leafpad' ]]; then
-        echo -e "$VE Estableciendo Editor GUI por defecto a$RO Leafpad$CL"
-        sudo update-alternatives --set gnome-text-editor /usr/bin/leafpad
     fi
 }
 
@@ -131,20 +100,6 @@ terminal() {
                 echo -e "$RO Opción no válida$CL"
         esac
     done
-}
-
-##
-## Configurar editor de gnome, gedit
-##
-configurar_gedit() {
-    if [[ ! -d "$HOME/.local/share" ]]; then
-        mkdir -p "$HOME/.local/share/" 2>> /dev/null
-    fi
-
-    cp -r ./gedit/.local/share/* "$HOME/.local/share/"
-
-    mkdir -p "$HOME/.config/gedit/" 2>> /dev/null
-    cp -r ./gedit/.config/gedit/* "$HOME/.config/gedit/"
 }
 
 ##
@@ -234,7 +189,6 @@ instalar_configuraciones() {
 
     cd "$WORKSCRIPT"
 
-    configurar_gedit
     configurar_nano
     agregar_conf_home
     configurar_hosts
