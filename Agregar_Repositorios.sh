@@ -44,8 +44,8 @@ agregar_llaves() {
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
     ## Repositorio de NodeJS Oficial
-    echo -e "$VE Agregando clave para$RO NodeJS Oficial Repositorio$CL"
-    curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+    #echo -e "$VE Agregando clave para$RO NodeJS Oficial Repositorio$CL"
+    #curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
 }
 
 ##
