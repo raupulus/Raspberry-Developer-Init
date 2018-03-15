@@ -31,8 +31,8 @@ nodejs_preconfiguracion() {
 
 nodejs_instalar() {
     echo -e "$VE Instalando$RO NodeJS$CL"
-    instalarSoftware nodejs
-    actualizarSoftware nodejs
+    instalarSoftware nodejs npm
+    actualizarSoftware nodejs npm
 }
 
 nodejs_postconfiguracion() {
