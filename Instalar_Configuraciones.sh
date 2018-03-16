@@ -156,6 +156,9 @@ configurar_hosts() {
 ## Añadir plantillas Genéricas
 ##
 agregar_plantillas() {
+    if [[ ! -d $HOME/Plantillas ]]; then
+        mkdir "$HOME/Plantillas"
+    fi
     crearBackup "$HOME/Plantillas"
     enlazarHome 'Plantillas/Genéricas'
 }
