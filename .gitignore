@@ -35,3 +35,4 @@ errores.log
 /conf/home/.vim/syntax_checkers
 /conf/home/.vim/test
 /.idea
+/.ropeproject
