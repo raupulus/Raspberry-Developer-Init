@@ -1,10 +1,13 @@
 /NOTAS.txt
+/TMP/*
 /test.sh
 test.sh
 /Backups/*
 Backups/*
 /logs/*
 logs/*
+tmp/*
+/tmp/*
 /conf/home/.vim/colors/monokai_1.vim
 conf/home/.vim/colors/monokai_1.vim
 /conf/home/.vim/colors/wombat.vim
@@ -35,4 +38,6 @@ errores.log
 /conf/home/.vim/syntax_checkers
 /conf/home/.vim/test
 /.idea
+npm-debug.log
+/npm-debug.log
 /.ropeproject
