@@ -16,13 +16,17 @@
 ############################
 ##     INSTRUCCIONES      ##
 ############################
+## Instala y configura apache 2, además opcionalmente facilita la
+## personalización de una estructura lista para usar con una zona privada y
+## otra zona pública donde se podrá desplegar aplicaciones nada más acabar.
+## Además se habilitan módulos y se modifican archivos de configuración.
 
 ############################
 ##        FUNCIONES       ##
 ############################
 
 apache2_descargar() {
-    echo "$VE Descargando$RO Apache2$CL"
+    echo -e "$VE Descargando$RO Apache2$CL"
 }
 
 apache2_preconfiguracion() {
@@ -133,11 +137,16 @@ apache2_postconfiguracion() {
             fi
         }
 
-        enlaces
+        ## Pregunta si generar enlace solo cuando falta uno de ellos
+        if [[ ! -h "$HOME/git" ]] &&
+           [[ ! -h "$HOME/GIT" ]] &&
+           [[ ! -h "$HOME/web" ]]; then
+            enlaces
+        fi
 
         ## Cambia los permisos
         echo -e "$VE Asignando permisos"
-        ## TOFIX → Función para los permisos
+        ## FIXME → Función para los permisos
         sudo chmod 775 -R /var/www/*
         sudo chmod 700 '/var/www/.htpasswd'
         sudo chmod 700 '/var/www/html/Privado/.htaccess'
