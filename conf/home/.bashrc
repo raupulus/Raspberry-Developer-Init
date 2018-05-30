@@ -191,12 +191,12 @@ if [[ "$TILIX_ID" ]] || [[ "$VTE_VERSION" ]]; then
 fi
 
 ## POWERLINE EN BASH (No lo uso, el siguiente código puede no funcionar bien)
-if [[ -f /usr/bin/powerline-daemon ]]; then
-    /usr/share/powerline/bindings/bash/powerline.sh -q
-    POWERLINE_BASH_CONTINUATION=1
-    POWERLINE_BASH_SELECT=1
-    . /usr/share/powerline/bindings/bash/powerline.sh
-fi
+#if [[ -f /usr/bin/powerline-daemon ]]; then
+#    /usr/share/powerline/bindings/bash/powerline.sh -q
+#    POWERLINE_BASH_CONTINUATION=1
+#    POWERLINE_BASH_SELECT=1
+#    . /usr/share/powerline/bindings/bash/powerline.sh
+#fi
 
 ###################################
 ### Mensaje al iniciar terminal ###
