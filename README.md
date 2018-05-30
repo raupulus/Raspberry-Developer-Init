@@ -3,8 +3,10 @@ Mis scripts para inicializar Raspbian y sincronizar personalización entre disti
 
 Con este script consigo automatizar la instalación y configuración de software, servidores, lenguajes de programación, editores... todo según mis gustos y necesidades.
 
-## Versión 0.0.2
-En esta versión aún se está comprobando el funcionamiento del script en busca de fallos o pasos no realizados.
+## Versión 0.0.3
+Versión usable con errores parcheados y basado en el desarrollo de esta misma
+suite para Debian stable que desarrollo aquí:
+https://github.com/fryntiz/Debian_Developer_Init
 
 Si encuentras algún fallo o detectas que algo podría funcionar mejor, añade un **Issue** al que estaré encantado de atender y valorar.
 

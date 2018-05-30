@@ -40,7 +40,7 @@ CL="\e[0m"       ## Limpiar colores
 
 WORKSCRIPT=$PWD  ## Directorio principal del script
 USER=$(whoami)   ## Usuario que ejecuta el script
-VERSION='0.0.2'  ## Versión en desarrollo
+VERSION='0.0.3'  ## Versión en desarrollo
 LOGERROR="$WORKSCRIPT/errores.log"  ## Archivo donde almacenar errores
 
 ############################
@@ -51,9 +51,7 @@ source "$WORKSCRIPT/funciones.sh"
 source "$WORKSCRIPT/Instalar_Configuraciones.sh"
 
 source "$WORKSCRIPT/Apps/0_Main.sh"
-source "$WORKSCRIPT/Personalizar/Configurar_GIT.sh"
-source "$WORKSCRIPT/Personalizar/Tipografías.sh"
-source "$WORKSCRIPT/Personalizar/Variables_Entorno.sh"
+source "$WORKSCRIPT/Personalizar/0_Main.sh"
 source "$WORKSCRIPT/Servidores/0_Main.sh"
 
 ###########################
@@ -90,19 +88,12 @@ menuPrincipal() {
             1) agregar_repositorios;;     ## Menú de Repositorios
             2) menuAplicaciones;;         ## Menú de Aplicaciones
             3) instalar_configuraciones;; ## Menú de Configuraciones
-            4) #menuPersonalizacion;;     ## Menú de Personalización
-               ## TOFIX → Las siguientes funciones deben quedar en Personalizar/
-               configuracion_git
-               personalizar
-               agregar_fuentes
-               instalar_variables;;
+            4) menuPersonalizacion;;      ## Menú de Personalización
             5) menuServidores;;           ## Menú de Servidores
             6) agregar_repositorios       ## Todos los pasos anteriores
                menuAplicaciones -a        ## Indica con "-a" que ejecute todas
                instalar_configuraciones
-               configuracion_git
-               agregar_fuentes
-               instalar_variables
+               menuPersonalizacion -a     ## Indica con "-a" que ejecute todas
                menuServidores -a;;        ## Indica con "-a" que ejecute todas
 
 
