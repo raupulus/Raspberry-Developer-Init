@@ -15,6 +15,11 @@
 ############################
 ##     INSTRUCCIONES      ##
 ############################
+## Este script instala siempre las aplicaciones que considero básicas en un
+## sistema operativo para trabajar y desarrollar.
+##
+## La lista de software utilizada se extrae de "Software.lst" y cualquier
+## progama que añadamos en este archivo, será instalado desde este script.
 
 ###########################
 ##       FUNCIONES       ##
@@ -41,7 +46,6 @@ aplicaciones_basicas() {
         for x in "${lista_todos_paquetes[@]}"; do
             if [[ $s = $x ]]; then
                 echo -e "$RO $s$VE ya estaba instalado$CL"
-                tmp=false
                 break
             else
                 instalarSoftware "$s"
