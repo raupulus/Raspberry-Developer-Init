@@ -62,6 +62,7 @@ ruby
 rubygems-integration
 ruby-minitest
 ruby-power-assert
+screen
 tcl
 tilix
 tk
