@@ -15,20 +15,49 @@
 ############################
 ##     INSTRUCCIONES      ##
 ############################
+## Este script enlaza la instalación de todas las aplicaciones opcionales
+## que podían ser interesante instalar en uno u otro momento.
 
 ############################
 ##     IMPORTACIONES      ##
 ############################
-source "$WORKSCRIPT/Apps/bashit.sh"
-source "$WORKSCRIPT/Apps/OhMyZsh.sh"
-source "$WORKSCRIPT/Apps/vim.sh"
 
-###########################
-##       FUNCIONES       ##
-###########################
+############################
+##       FUNCIONES        ##
+############################
+
+instalar_todas_aplicaciones_extras() {
+    echo 'Aún no hay apps extras'
+}
+
 aplicaciones_extras() {
     echo -e "$VE Instalando Aplicaciones$RO Extras$CL"
-    bashit_Instalador
-    ohmyzsh_Instalador
-    vim_Instalador
+    if [[ "$1" = '-a' ]]; then
+        instalar_todas_aplicaciones_extras
+    else
+        while true :; do
+            clear
+            local descripcion='Menú de aplicaciones
+                0) Atrás
+            '
+            opciones "$descripcion"
+
+            echo -e "$RO"
+            read -p "    Acción → " entrada
+            echo -e "$CL"
+
+            case $entrada in
+
+                0)  ## SALIR
+                    clear
+                    echo -e "$RO Se sale del menú$CL"
+                    echo ''
+                    break;;
+
+                *)  ## Acción ante entrada no válida
+                    echo ""
+                    echo -e "                      $RO ATENCIÓN: Elección no válida$CL";;
+            esac
+        done
+    fi
 }
