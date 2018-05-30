@@ -74,7 +74,6 @@ devicons_ls() {
 aplicaciones_usuarios() {
     echo -e "$VE Instalando Aplicaciones específicas para el usuario$RO $USER$CL"
     configurar_heroku
-    firefox_instalador
     bashit_Instalador
     ohmyzsh_Instalador
 
