@@ -317,3 +317,8 @@ fi
 #if [[ -x "$HOME/.local/bin/devicons-ls" ]]; then
 #    alias ls='devicons-ls'
 #fi
+
+
+if [[ -x '/usr/bin/tmux' ]]; then
+    tmux
+fi
