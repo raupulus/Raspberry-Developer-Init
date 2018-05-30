@@ -27,9 +27,9 @@ source "$WORKSCRIPT/Apps/1_Aplicaciones_Basicas.sh"
 source "$WORKSCRIPT/Apps/2_Aplicaciones_Extras.sh"
 source "$WORKSCRIPT/Apps/3_Aplicaciones_Usuario.sh"
 
-###########################
-##       FUNCIONES       ##
-###########################
+############################
+##       FUNCIONES        ##
+############################
 ##
 ## Menú para elegir las aplicaciones a instalar
 ## @param $1 -a Si recibe este parámetro ejecutará todos los scripts
@@ -39,7 +39,7 @@ menuAplicaciones() {
         clear
         echo -e "$VE Instalando todas las aplicaciones$CL"
         aplicaciones_basicas
-        aplicaciones_extras
+        aplicaciones_extras -a
         aplicaciones_usuarios
     }
 
@@ -53,7 +53,7 @@ menuAplicaciones() {
                 1) Aplicaciones Básicas
                 2) Aplicaciones Extras
                 3) Aplicaciones de Usuario
-                4) Todos los pasos anteriores
+                4) Todos los pasos anteriores completos
 
                 0) Atrás
             '
