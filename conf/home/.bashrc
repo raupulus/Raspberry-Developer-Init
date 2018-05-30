@@ -319,6 +319,6 @@ fi
 #fi
 
 
-if [[ -x '/usr/bin/tmux' ]]; then
-    tmux
-fi
+#if [[ -x '/usr/bin/tmux' ]]; then
+#    tmux
+#fi
