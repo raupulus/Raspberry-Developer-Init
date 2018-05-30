@@ -16,13 +16,19 @@
 ############################
 ##     INSTRUCCIONES      ##
 ############################
+## Instala php en su última versión estable desde repositorios y además
+## configura todas las versiones instaladas en el sistema.
+## Se activan módulos necesarios de apache y se corrigen posibles conflictos
+## con otras versiones en archivos de configuración si hemos actualizado desde
+## php 5.
+## Configura Xdebug también.
 
 ############################
 ##        FUNCIONES       ##
 ############################
 
 php_descargar() {
-    echo "$VE Descargando$RO php$CL"
+    echo -e "$VE Descargando$RO php$CL"
 }
 
 php_preconfiguracion() {
@@ -35,8 +41,7 @@ php_instalar() {
     instalarSoftware "$paquetes_basicos"
 
     echo -e "$VE Instalando$RO paquetes extras$CL"
-    ## TODO → Convertir en array el contenido de la variable:
-    local paquetes_extras="php-gd php-curl php-pgsql php-sqlite3 sqlite sqlite3 php-intl php-mbstring php-xml php-xdebug php-json"
+    local paquetes_extras="php-gd php-curl php-pgsql php-sqlite3 sqlite sqlite3 php-intl php-mbstring php-xml php-xdebug php-json php-zip"
     instalarSoftware "$paquetes_extras"
 
     echo -e "$VE Instalando librerías$CL"
@@ -66,44 +71,52 @@ php_postconfiguracion() {
 
         echo -e "$VE Activando Mostrar errores al iniciar → 'display_startup_errors'$CL"
         sudo sed -r -i "s/^;?\s*display_startup_errors\s*=.*$/display_startup_errors = On/" $PHPINI
+
+        echo -e "$VE Tiempo máximo de ejecución 3 minutos → 'max_execution_time'$CL"
+        sudo sed -r -i "s/^;?\s*max_execution_time\s*=.*$/max_execution_time = 180/" $PHPINI
+
+        echo -e "$VE Límite de Memoria por script → 'memory_limit = 128M'$CL"
+        sudo sed -r -i "s/^;?\s*memory_limit\s*=.*$/memory_limit = 128M/" $PHPINI
+
+        ## Límite de archivos
+        echo -e "$VE Tamaño máximo de subida → 'upload_max_filesize = 512M'$CL"
+        sudo sed -r -i "s/^;?\s*upload_max_filesize\s*=.*$/upload_max_filesize = 512M/" $PHPINI
+
+        echo -e "$VE Tamaño máximo de POST → 'post_max_size = 1024M'$CL"
+        sudo sed -r -i "s/^;?\s*post_max_size\s*=.*$/post_max_size = 1024M/" $PHPINI
     }
 
     personalizar_php() {
         echo -e "$VE Personalizando PHP$CL"
 
+        ## Descargar e instalar Psysh y su manual en Español
         psysh() {
-            descargar_psysh() {
-                echo -e "$VE Descargando Intérprete$RO PsySH$AM"
-                ## Descargar PsySH
-                descargar 'psysh' 'https://git.io/psysh'
-                ## Descargar Manual para PsySH
-                descargar 'php_manual.sqlite' 'http://psysh.org/manual/es/php_manual.sqlite'
-            }
-
-            instalar_psysh() {
-                echo -e "$VE Instalando Intérprete$RO PsySH$AM"
-                cp "$WORKSCRIPT/tmp/psysh" "$HOME/.local/bin/psysh"
-                chmod +x "$HOME/.local/bin/psysh"
-
-                ## Manual
-                echo -e "$VE Instalando manual para$RO PsySH$AM"
-                if [[ -d "$HOME/.local/share/psysh" ]]; then
-                    mkdir -p "$HOME/.local/share/psysh"
-                fi
-                cp "$WORKSCRIPT/tmp/php_manual.sqlite" "$HOME/.local/share/psysh/php_manual.sqlite"
-            }
-
-            if [[ -f "$HOME/.local/bin/psysh" ]]
-            then
-                echo -e "$VE Ya esta$RO psysh$VE instalado en el equipo,$AM omitiendo paso$CL"
-            else
-                if [[ -f "$WORKSCRIPT/tmp/psysh" ]]; then
-                    instalar_psysh
-                else
-                    descargar_psysh
-                    instalar_psysh
-                fi
+            echo -e "$VE Descargando e instalando$RO PsySH$CL"
+            if [[ -f "$HOME/.local/bin/psysh" ]]; then
+                rm -f "$HOME/.local/bin/psysh"
             fi
+
+            if [[ ! -f "$WORKSCRIPT/tmp/psysh" ]]; then
+                descargar 'psysh' 'https://git.io/psysh'
+            fi
+
+            cp "$WORKSCRIPT/tmp/psysh" "$HOME/.local/bin/psysh"
+            chmod +x "$HOME/.local/bin/psysh"
+
+            echo -e "$VE Instalando manual para$RO PsySH$AM"
+            if [[ -f "$HOME/.local/share/psysh/php_manual.sqlite" ]]; then
+                rm -f "$HOME/.local/share/psysh/php_manual.sqlite"
+            fi
+
+            if [[ ! -d "$HOME/.local/share/psysh" ]]; then
+                mkdir -p "$HOME/.local/share/psysh"
+            fi
+
+            if [[ ! -f "$WORKSCRIPT/tmp/php_manual.sqlite" ]]; then
+                descargar 'php_manual.sqlite' 'http://psysh.org/manual/es/php_manual.sqlite'
+            fi
+
+            cp "$WORKSCRIPT/tmp/php_manual.sqlite" "$HOME/.local/share/psysh/php_manual.sqlite"
         }
 
         psysh
@@ -128,24 +141,24 @@ php_postconfiguracion() {
 
     ## Configura todas las versiones de php existentes
     for V_PHP in "${ALL_PHP[@]}"; do
-        instalar_php "$V_PHP"
+        #instalar_php "$V_PHP"
         configurar_php "$V_PHP"
         personalizar_php "$V_PHP"
         xdebug "$V_PHP"
     done
 
     ## Si solo hay una versión de PHP la configura, en otro caso pregunta
-    if [[ 1 = ${#ALL_PHP[@]} ]]; then
+    if [[ 1 = "${#ALL_PHP[@]}" ]]; then
         sudo a2enmod "php${ALL_PHP[0]}"
     else
         ## Pide introducir la versión de PHP para configurar con apache
         while true :; do
             clear
             echo -e "$VE Introduce la versión de$RO PHP$VE a utilizar$CL"
-            echo -e "$AZ ${ALL_PHP[@]} $RO"  ## Pinta versiones para elegirla
+            echo -e "$AZ ${ALL_PHP[*]} $RO"  ## Pinta versiones para elegirla
             read -p "    → " input
             for V_PHP in "${ALL_PHP[@]}"; do
-                if [[ $input = $V_PHP ]]; then
+                if [[ $input = "$V_PHP" ]]; then
                     sudo a2enmod "php$V_PHP"
                     break
                 fi
@@ -156,14 +169,14 @@ php_postconfiguracion() {
 
     ## Activar módulos
     echo -e "$VE Activando módulos$CL"
-    sudo phpenmod -s apache2 xdebug
+    sudo phpenmod -s 'apache2' 'xdebug'
 
     echo -e "$VE Desactivando Módulos"
     ## Xdebug para PHP CLI no tiene sentido y ralentiza
-    sudo phpdismod -s cli xdebug
+    sudo phpdismod -s 'cli' 'xdebug'
 
     ## Reiniciar apache2 para hacer efectivos los cambios
-    reiniciarServicio apache2
+    reiniciarServicio 'apache2'
 }
 
 
