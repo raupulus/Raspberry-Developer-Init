@@ -19,12 +19,12 @@
 ## Este script tiene como objetivo ofrecer funciones recurrentes de
 ## forma auxiliar para todos los demás scripts.
 
-###########################
-##       FUNCIONES       ##
-###########################
+############################
+##       FUNCIONES        ##
+############################
 ##
 ## Crea un respaldo del archivo o directorio pasado como parámetro
-## @param  "$@"  Recibe una serie de elementos a los que crearle un backup
+## @param  $*  Recibe una serie de elementos a los que crearle un backup
 ##
 crearBackup() {
     ## Crear directorio Backups si no existiera
@@ -32,7 +32,7 @@ crearBackup() {
         mkdir "$WORKSCRIPT/Backups"
     fi
 
-    for salvando in "$@"; do
+    for salvando in $*; do
         if [[ -f $salvando ]]; then
             echo "Creando Backup del archivo $salvando"
             cp "$salvando" "$WORKSCRIPT/Backups/"
@@ -56,10 +56,10 @@ opciones() {
 
 ##
 ## Recibe uno o más parámetros con el nombre de los programas a instalar
-## @param  "$@"  String  Nombre de programas a instalar
+## @param  $*  String  Nombre de programas a instalar
 ##
 instalarSoftware() {
-    for programa in "$@"; do
+    for programa in $*; do
         sudo apt install -y "$programa"
     done
 }
@@ -67,20 +67,20 @@ instalarSoftware() {
 ##
 ## Recibe uno o más parámetros con el nombre de los programas y los actualiza
 ## de versión en el caso de que exista una superior en el repositorio
-## @param  "$@"  String  Nombres de programas para ser actualizados
+## @param  $*  String  Nombres de programas para ser actualizados
 ##
 actualizarSoftware() {
-    for programa in "$@"; do
+    for programa in $*; do
         sudo apt upgrade -y "$programa"
     done
 }
 
 ##
 ## Recibe uno o más parámetros con el nombre de los paquetes a instalar
-## @param  "$@"  String  Nombre de paquetes a instalar
+## @param  $*  String  Nombre de paquetes a instalar
 ##
 instalarSoftwareDPKG() {
-    for programa in "$@"; do
+    for programa in $*; do
         sudo dpkg -i "$programa"
     done
 
@@ -146,20 +146,35 @@ descargarGIT() {
         done
     else
         echo -e "$RO$1$VE ya está instalado$CL"
-        echo -e "$VE Se actualizará el repositorio existente de$RO $1$CL"
-        cd "$3"
-        git pull origin master
-        cd "$WORKSCRIPT"
+        actualizarGIT "$1" "$3"
     fi
 }
+
+##
+## Recibe un nombre y el directorio donde se encuentra el repositorio.
+## @param  $1  String  Nombre, es más para informar y registrar log.
+## @param  $2  String  Ruta hacia la raíz del repositorio en el sistema.
+##
+actualizarGIT() {
+    if [[ -d "$2" ]] && [[ -d "$2/.git" ]]; then
+        echo -e "$VE Se actualizará el repositorio existente de$RO $1$CL"
+        cd $2 || exit 1
+        echo -e "$VE Limpiando posibles cambios en el repositorio$RO $1$CL"
+        git checkout -- .
+        echo -e "$VE Actualizando repositorio$RO $1$CL"
+        git pull
+        cd $WORKSCRIPT || return
+    fi
+}
+
 ##
 ## Crea un enlace por archivo pasado después de realizar una copia de seguridad ## tomando como punto de referencia el propio repositorio, ruta conf/home/
 ## donde estarán situado todos los archivos para ser actualizados con
 ## el repositorio.
-## @param  "$@"  String  Nombre del archivo o directorio dentro del home del user
+## @param  $*  String  Nombre del archivo o directorio dentro del home del user
 ##
 enlazarHome() {
-    for x in "$@"; do
+    for x in $*; do
         echo -e "$VE Creando enlace de$RO $x$CL"
 
         if [[ -h "$HOME/$x" ]]; then  ## Si es un enlace
@@ -184,10 +199,10 @@ enlazarHome() {
 
 ##
 ## Recibe uno o más paquetes para eliminarse con dpkg mediante "apt purge -y"
-## @param "$@" Recibe los paquetes que necesite y los borra
+## @param $* Recibe los paquetes que necesite y los borra
 ##
 desinstalar_paquetes() {
-    for x in "$@"; do
+    for x in $*; do
         echo -e "$RO Borrando x$CL"
         sudo apt purge -y x
     done
@@ -195,10 +210,10 @@ desinstalar_paquetes() {
 
 ##
 ## Recibe uno o más nombres de servicios para reiniciarlos
-## @param "$@" Recibe los servicios que necesite reiniciar
+## @param $* Recibe los servicios que necesite reiniciar
 ##
 reiniciarServicio() {
-    for x in "$@"; do
+    for x in $*; do
         echo -e "$RO Reiniciando $x$CL"
         sudo systemctl restart "$x"
     done
@@ -217,10 +232,10 @@ prepararInstalador() {
 ## Instala los paquetes recibidos con "npm" el gestor de paquetes de NodeJS.
 ## De esta forma serán instalado los paquetes de forma global, no para un
 ## proyecto concreto como dependencia.
-## @param "$@" Recibe los paquetes que se van a instalar
+## @param $* Recibe los paquetes que se van a instalar
 ##
 instalarNpm() {
-    for x in "$@"; do
+    for x in $*; do
         echo -e "$RO Instalando $x$CL"
         sudo npm install -g "$x"
     done
