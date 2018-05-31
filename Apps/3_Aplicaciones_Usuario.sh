@@ -32,7 +32,7 @@ source "$WORKSCRIPT/Apps/vim.sh"
 ############################
 configurar_heroku() {
     echo -e "$VE Se va a configurar$RO Heroku$CL"
-    instalarSoftware 'heroku'
+    curl https://cli-assets.heroku.com/install-standalone.sh | sh
     echo -e "$VE ¿Quieres configurar tu cuenta de$RO Heroku?$CL"
     echo -e "$VE Para configurar la cuenta tienes que tenerla creada$CL"
     read -p '    s/N → ' input
